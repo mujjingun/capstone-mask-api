@@ -42,7 +42,7 @@ app.get('/', function(req, res) {
             <div>
                 <div id="date"></div>
                 <div>현재 위치를 선택하시면 근처의 공적마스크 판매소들이 보입니다.</div>
-                <div id="map" style="width:100%;height:400px;"></div>
+                <div id="map" style="width:100%;height:500px;"></div>
                 <label for="radius">반경 (m): </label>
                 <input type="number" id="radius">
             </div>
@@ -52,6 +52,11 @@ app.get('/', function(req, res) {
         </div>
         <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3f9425331cc87fcd283680b62ec9d1ab&libraries=drawing"></script>
         <script>
+            const brownImg = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGhlaWdodD0iMTAwIiB3aWR0aD0iMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJicm93biIgLz4KPC9zdmc+Cg=="
+            const greenImg = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGhlaWdodD0iMTAwIiB3aWR0aD0iMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJncmVlbiIgLz4KPC9zdmc+Cg=="
+            const greyImg = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGhlaWdodD0iMTAwIiB3aWR0aD0iMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJncmV5IiAvPgo8L3N2Zz4K"
+            const redImg = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGhlaWdodD0iMTAwIiB3aWR0aD0iMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJyZWQiIC8+Cjwvc3ZnPgo=";
+
             var lat = 37.551737561286295;
             var lng = 126.94070010218512;
             var acc = 500;
@@ -90,29 +95,39 @@ app.get('/', function(req, res) {
                                 var inner = "<div>" + store.name + "</div>"
                                 inner += "<div>" + store.addr + "</div>"
                                 var status = ""
+                                var img = ""
                                 if (store.remain_stat === "plenty") {
                                     status = '<span style="color: green">100개 이상</span>'
+                                    img = greenImg;
                                 }
                                 else if (store.remain_stat === "some") {
                                     status = '<span style="color: brown">30 ~ 100개</span>'
+                                    img = brownImg;
                                 }
                                 else if (store.remain_stat === "few") {
                                     status = '<span style="color: red">30개 미만</span>'
+                                    img = redImg;
                                 }
                                 else if (store.remain_stat === "empty") {
                                     status = '<span style="color: grey">없음</span>'
+                                    img = greyImg;
                                 }
                                 else if (store.remain_stat === "break") {
                                     status = '<span style="color: grey">판매중지</span>'
+                                    img = greyImg;
                                 }
                                 inner += "<div>" + status + "</div>"
                                 text += "<li>" + inner + "</li>"
 
+                                var icon = new kakao.maps.MarkerImage(
+                                    img,
+                                    new kakao.maps.Size(15, 15));
                                 var m = new kakao.maps.Marker({
                                     map: map,
                                     position: new kakao.maps.LatLng(store.lat, store.lng),
                                     draggable: false,
-                                    title: store.name
+                                    title: store.name,
+                                    image: icon
                                 });
                                 markers.push(m)
                             })
@@ -145,7 +160,7 @@ app.get('/', function(req, res) {
                     strokeColor: '#0000ff',
                     strokeStyle: 'longdash',
                     fillColor: '#ff00ff',
-                    fillOpacity: 0.3
+                    fillOpacity: 0.1
                 }
             });
             var marker = new kakao.maps.Marker({
@@ -192,6 +207,7 @@ app.get('/', function(req, res) {
                 updateList();
             });
 
+            updateMap();
             updateList();
         </script>
     </body>
